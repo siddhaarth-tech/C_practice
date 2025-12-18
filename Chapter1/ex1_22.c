@@ -3,53 +3,51 @@ Exercise 1-22:
 Write a program to fold long input lines into two or more shorter lines
 after the last non-blank character before column 40.
 */
-
 #include <stdio.h>
-#define MAX 40
-int main()
+
+#define MAXCOL 40
+
+int main(void)
 {
     int c;
     int col = 0;
-    int last_space = -1;
-    char line[1000];
-    int i = 0;
-    while ((c = getchar()) != EOF)
-    {
-        line[i++] = c;
-        col++;
+    int last_blank = -1;
+    char line[MAXCOL + 1];
+
+    while ((c = getchar()) != EOF) {
+
+        line[col] = c;
+
         if (c == ' ' || c == '\t')
-            last_space = i - 1;
+            last_blank = col;
 
-        if (c == '\n')
-        {
-            for (int j = 0; j < i; j++)
-                putchar(line[j]);
+        col++;
 
-            i = 0;
+        if (c == '\n') {
+            for (int i = 0; i < col; i++)
+                putchar(line[i]);
             col = 0;
-            last_space = -1;
+            last_blank = -1;
         }
-        else if (col >= MAX)
-        {
-            if (last_space != -1)
-            {
-                for (int j = 0; j <= last_space; j++)
-                    putchar(line[j]);
+        else if (col >= MAXCOL) {
+            if (last_blank >= 0) {
+                for (int i = 0; i <= last_blank; i++)
+                    putchar(line[i]);
                 putchar('\n');
-                i = i - last_space - 1;
-                for (int j = 0; j < i; j++)
-                    line[j] = line[last_space + 1 + j];
-            }
-            else
-            {
-                for (int j = 0; j < i; j++)
-                    putchar(line[j]);
+
+                col = col - last_blank - 1;
+                for (int i = 0; i < col; i++)
+                    line[i] = line[last_blank + 1 + i];
+            } else {
+                for (int i = 0; i < col; i++)
+                    putchar(line[i]);
                 putchar('\n');
-                i = 0;
+                col = 0;
             }
-            col = i;
-            last_space = -1;
+            last_blank = -1;
         }
     }
+
     return 0;
 }
+
