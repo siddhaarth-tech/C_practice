@@ -3,7 +3,7 @@ the length of arbitrary long input lines, and as much as possible of the text.*/
 #include <stdio.h>
 #define MAXLINE 1000
 
-int getline(char line[], int maxline);
+int getline_cus(char line[], int maxline);
 void copy(char to[], char from[]);
 
 int main() {
@@ -11,7 +11,7 @@ int main() {
     char line[MAXLINE];
     char longest[MAXLINE];
 
-    while ((len = getline(line, MAXLINE)) > 0) {
+    while ((len = getline_cus(line, MAXLINE)) > 0) {
         if (len > maxlen) {
             maxlen = len;
             copy(longest, line);
@@ -26,7 +26,7 @@ int main() {
     return 0;
 }
 
-int getline(char s[], int lim) {
+int getline_cus(char s[], int lim) {
     int c, i = 0, len = 0;
 
     while ((c = getchar()) != EOF && c != '\n') {
