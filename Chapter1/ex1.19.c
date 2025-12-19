@@ -2,7 +2,7 @@
 write a program that reverses its input a line at a time.*/
 #include <stdio.h>
 #define MAXLINE 1000
-int getline(char line[], int maxline);
+int getline_cus(char line[], int maxline);
 void copy(char to[], char from[]);
 void reverse(char s[]);
 
@@ -11,7 +11,7 @@ int main() {
     char copied[MAXLINE];
     int len;
 
-    while ((len = getline(line, MAXLINE)) > 0) {
+    while ((len = getline_cus(line, MAXLINE)) > 0) {
         copy(copied, line);
         reverse(copied);
         printf("%s", copied);
@@ -20,7 +20,7 @@ int main() {
     return 0;
 }
 
-int getline(char s[], int lim) {
+int getline_cus(char s[], int lim) {
     int c, i;
 
     for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; i++)
