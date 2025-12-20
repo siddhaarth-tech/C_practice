@@ -1,57 +1,58 @@
 /*
 Exercise 1-24:
-Write a program to check a C program for unmatched (), {}, and [].
-Ignore strings and character constants.
+Write a program to check a C program for rudimentary syntax errors like
+unmatched parentheses, brackets and braces. Don't forget about quotes.
 */
 
 #include <stdio.h>
-int main()
-{
-    int c;
-    int paren = 0;
-    int brace = 0;
-    int bracket = 0;
-    int in_string = 0;
-    int in_char = 0;
-    while ((c = getchar()) != EOF)
-    {
-        if (in_string)
-        {
-            if (c == '"')
-                in_string = 0;
+
+int main() {
+    int inQuote = 0;
+    /* Outside quotes */
+    int p = 0, b = 0, c = 0;
+    /* Inside quotes */
+    int qp = 0, qb = 0, qc = 0;
+    char ch;
+    while ((ch = getchar()) != EOF) {
+        if (ch == '"') {
+            inQuote = !inQuote;
+            continue;
         }
-        else if (in_char)
-        {
-            if (c == '\'')
-                in_char = 0;
+        /* Outside quotes */
+        if (!inQuote) {
+            if (ch == '(') p++;
+            else if (ch == ')') p--;
+            else if (ch == '[') b++;
+            else if (ch == ']') b--;
+            else if (ch == '{') c++;
+            else if (ch == '}') c--;
+            if (p < 0 || b < 0 || c < 0) {
+                printf("SYNTAX ERROR: Unmatched bracket outside quotes\n");
+                return 0;
+            }
         }
-        else
-        {
-            if (c == '"')
-                in_string = 1;
-            else if (c == '\'')
-                in_char = 1;
-            else if (c == '(')
-                paren++;
-            else if (c == ')')
-                paren--;
-            else if (c == '{')
-                brace++;
-            else if (c == '}')
-                brace--;
-            else if (c == '[')
-                bracket++;
-            else if (c == ']')
-                bracket--;
+        /* Inside quotes */
+        else {
+            if (ch == '(') qp++;
+            else if (ch == ')') qp--;
+            else if (ch == '[') qb++;
+            else if (ch == ']') qb--;
+            else if (ch == '{') qc++;
+            else if (ch == '}') qc--;
+            if (qp < 0 || qb < 0 || qc < 0) {
+                printf("SYNTAX ERROR: Unmatched bracket inside quotes\n");
+                return 0;
+            }
         }
     }
-    if (paren != 0)
-        printf("Unmatched parentheses\n");
-    if (brace != 0)
-        printf("Unmatched braces\n");
-    if (bracket != 0)
-        printf("Unmatched brackets\n");
-    if (paren == 0 && brace == 0 && bracket == 0)
-        printf("No syntax errors\n");
+    if (inQuote)
+        printf("SYNTAX ERROR: Unclosed double quote\n");
+    else if (p || b || c)
+        printf("SYNTAX ERROR: Unmatched bracket outside quotes\n");
+    else if (qp || qb || qc)
+        printf("SYNTAX ERROR: Unmatched bracket inside quotes\n");
+    else
+        printf("NO SYNTAX ERRORS\n");
+
     return 0;
 }
