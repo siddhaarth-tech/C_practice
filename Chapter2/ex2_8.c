@@ -19,8 +19,10 @@ unsigned rightrot(unsigned x, int n)
 
 int main(void)
 {
-    unsigned x = 22;   
-    int n = 2;
+    unsigned x ;   
+    int n ;
+    scanf("%u",&x);
+    scanf("%d",&n);
 
     unsigned result = rightrot(x, n);
 
