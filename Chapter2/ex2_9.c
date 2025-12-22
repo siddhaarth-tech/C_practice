@@ -11,11 +11,13 @@ int bitcount(unsigned x)
         count++;
     }
 
+
     return count;
 }
 int main(void)
 {
-    unsigned x = 45;   // 00101101
+    unsigned x;  
+    scanf("%u",&x);
 
     printf("Number of setbits in %u is %d\n", x, bitcount(x));
     return 0;
