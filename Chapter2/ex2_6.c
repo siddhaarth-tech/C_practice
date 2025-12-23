@@ -2,26 +2,41 @@
 position p set to the rightmost n bits of y, leaving the other bits unchanged.*/
 
 #include <stdio.h>
+
 unsigned setbits(unsigned x, int p, int n, unsigned y)
 {
-    unsigned ybits;
-    /* extract rightmost n bits of y and shift to position */
-    ybits = (y & ((1U << n) - 1)) << (p - n + 1);
-    /* clear n bits in x starting at position p */
-    x = x & ~(((1U << n) - 1) << (p - n + 1));
-    /* insert the bits from y */
-    x = x | ybits;
+    unsigned bitfield;
+
+    /* n 1-bits */
+    bitfield = (1U << n) - 1;
+
+    /* clear n bits of x starting at position p */
+    x &= ~(bitfield << p);
+
+    /* insert rightmost n bits of y into x */
+    x |= (y & bitfield) << p;
+
     return x;
 }
 
 int main(void)
 {
-    unsigned x = 45;   
-    unsigned y = 6;    
-    int p = 5;
-    int n = 3;
-    unsigned result = setbits(x, p, n, y);
-    printf("%u\n", result);
+    unsigned x, y;
+    int p, n;
+
+    printf("Enter value for x: ");
+    scanf("%u", &x);
+
+    printf("Enter value for y: ");
+    scanf("%u", &y);
+
+    printf("Enter position p: ");
+    scanf("%d", &p);
+
+    printf("Enter number of bits n: ");
+    scanf("%d", &n);
+
+    printf("Result: %u\n", setbits(x, p, n, y));
 
     return 0;
 }

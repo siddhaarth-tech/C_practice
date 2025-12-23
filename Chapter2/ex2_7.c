@@ -2,18 +2,27 @@
 position p inverted (i.e., 1 changed into 0 and vice versa), leaving the others unchanged.*/
 
 #include <stdio.h>
+
 unsigned invert(unsigned x, int p, int n)
 {
-    /* invert n bits starting at position p */
-    x = x ^ (((1U << n) - 1) << (p - n + 1));
-
-    return x;
+    /* invert n bits starting at position p and moving left */
+    unsigned tempbits = ((1U << n) - 1) << p;
+    return x ^ tempbits;
 }
+
 int main(void)
 {
-    unsigned x = 25;
-    int p = 2;
-    int n = 3;
+    unsigned x;
+    int p, n;
+
+    printf("Enter an unsigned integer (x): ");
+    scanf("%u", &x);
+
+    printf("Enter position p: ");
+    scanf("%d", &p);
+
+    printf("Enter number of bits n: ");
+    scanf("%d", &n);
 
     unsigned result = invert(x, p, n);
 
