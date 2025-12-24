@@ -3,20 +3,24 @@ Exercise 1-23:
 Write a program to remove all comments from a C program.
 Handle strings and character constants properly.
 */
-
 #include <stdio.h>
-int main()
+
+int main(void)
 {
     int c, prev = 0;
-    int in_comment = 0;
+    int in_block_comment = 0;
     int in_string = 0;
     int in_char = 0;
+
     while ((c = getchar()) != EOF)
     {
-        if (in_comment)
+        if (in_block_comment)
         {
-            if (prev == '*' && c == '/')
-                in_comment = 0;
+
+            if (prev == '*' && c == '/'){
+                in_block_comment = 0;
+				prev=0;
+				continue;}
         }
         else if (in_string)
         {
@@ -34,24 +38,42 @@ int main()
         {
             if (prev == '/' && c == '*')
             {
-                in_comment = 1;
+                in_block_comment = 1;
                 prev = 0;
                 continue;
             }
-            else if (c == '"')
+            else if (prev == '/' && c == '/')
             {
-                in_string = 1;
-                putchar(c);
+                while ((c = getchar()) != EOF && c != '\n')
+                    ;
+                putchar('\n');
+                prev = 0;
+                continue;
             }
-            else if (c == '\'')
+            else
             {
-                in_char = 1;
-                putchar(c);
+                if (prev == '/' && c != '/' && c != '*')
+                    putchar('/');
+
+                if (c == '"')
+                {
+                    in_string = 1;
+                    putchar(c);
+                }
+                else if (c == '\'')
+                {
+                    in_char = 1;
+                    putchar(c);
+                }
+                else if (c != '/')
+                {
+                    putchar(c);
+                }
             }
-            else if (prev)
-                putchar(prev);
         }
+
         prev = c;
     }
+
     return 0;
 }
