@@ -58,7 +58,18 @@ int main(void)
         case '%':      /* MODULUS */
             op2 = pop();
             if (op2 != 0.0)
-                push((int)pop() % (int)op2);
+            {
+                int op1=pop();
+                if(op1<0)
+                {
+                    int rem = ((int)op1 % abs((int)op2));
+                    push(rem + abs(op2));
+                }
+                else
+                {
+                    push(op1 % (int)op2);
+                }
+            }
             else
                 printf("error: zero divisor\n");
             break;
