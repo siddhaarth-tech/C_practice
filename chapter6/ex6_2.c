@@ -31,8 +31,9 @@ static struct tnode *prev=NULL;
 static int prefix_len;
 
 char *keywords[]={
-    
+    "auto","break","case","char","const","continue","default","do",
     "double","else","enum","extern","float","for","goto","if",
+    "int","long","register","return","short","signed","sizeof","static",
     "struct","switch","typedef","union","unsigned","void","volatile","while",
     NULL
 };
@@ -80,6 +81,21 @@ struct tnode *addtree(struct tnode *p, char *w)
   return p;
 }
 
+void markgroups(struct tnode *p)
+{
+  if(p==NULL)
+    return;
+
+  markgroups(p->left);
+
+  if(prev!=NULL && strncmp(prev->word,p->word,prefix_len)==0 && strcmp(prev->word,p->word)!=0) 
+  { 
+    prev->match = 1;
+    p->match = 1;
+  }
+  prev = p;
+  markgroups(p->right);
+}
 
 void treeprint(struct tnode *p)
 {
