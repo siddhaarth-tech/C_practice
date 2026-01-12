@@ -2,6 +2,7 @@
 comments, or preprocessor control lines. Write a better version.*/
 
 
+
 #include <stdio.h>
 #include <ctype.h>
 
