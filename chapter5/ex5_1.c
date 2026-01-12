@@ -64,44 +64,48 @@ void ungetch(int val)
 
 int getint(int *p)
 {
-  int c;
-  
-  while(isspace(c=getch()))
-  {
-    ;
-  }
-  
-  if(!isdigit(c) && c!='+' && c!='-' && c!=EOF)
-  {
-    ungetch(c);
-    return 0;
-  }
-  
-  int sign=(c=='-') ? -1 : 1;
-  
-  if(c=='+' || c=='-')
-  {
-    int next=getch();
-    if(!isdigit(next))
-    {
-      ungetch(next);
-      ungetch(c);
-      return 0;
+    int c, sign;
+
+    /* skip white space */
+    while ((c = getch()) != EOF && isspace(c))
+        ;
+
+    /* handle EOF immediately */
+    if (c == EOF)
+        return EOF;
+
+    /* reject invalid input */
+    if (!isdigit(c) && c != '+' && c != '-') {
+        ungetch(c);
+        return 0;
     }
-    c=next;
-  }
-  
-  *p=0;
-  while(isdigit(c))
-  {
-    *p = (*p * 10) + (c-'0');
-    c=getch();
-  }
-  *p = *p * sign;
-  if(c!=EOF)
-  {
-    ungetch(c);
-  }
-  
-  return c;
+
+    sign = (c == '-') ? -1 : 1;
+
+    /* handle sign */
+    if (c == '+' || c == '-') {
+        int next = getch();
+        if (!isdigit(next)) {
+            if (next != EOF)
+                ungetch(next);
+            ungetch(c);
+            return 0;
+        }
+        c = next;
+    }
+
+    *p = 0;
+
+    /* collect digits */
+    while (isdigit(c)) {
+        *p = (*p * 10) + (c - '0');
+        c = getch();
+    }
+
+    *p *= sign;
+
+    if (c != EOF)
+        ungetch(c);
+
+    return 1;   /* SUCCESS */
 }
