@@ -26,9 +26,9 @@ typedef struct _iobuf
 }FILE;
 
 FILE _iob[OPEN_MAX]={
-    { 0, NULL, NULL, 0, 1, 0, 0, 0, 0 },
-    { 0, NULL, NULL, 1, 0, 1, 0, 0, 0 },
-    { 0, NULL, NULL, 2, 0, 1, 1, 0, 0 }
+    { 0, NULL, NULL, 0, 1, 0, 0, 0, 0 }, //stdin
+    { 0, NULL, NULL, 1, 0, 1, 0, 0, 0 }, //stdout
+    { 0, NULL, NULL, 2, 0, 1, 1, 0, 0 }  //stderr
 };
 
 #define stdin  (&_iob[0])
